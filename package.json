@@ -1,0 +1,20 @@
+{
+  "name": "image-processing-api",
+  "version": "1.0.0",
+  "description": "An Image Processing API using Sharp package",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ahmed96Mah/Image-Processing-API.git"
+  },
+  "keywords": [],
+  "author": "Ahmed Abdalwahab",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Ahmed96Mah/Image-Processing-API/issues"
+  },
+  "homepage": "https://github.com/Ahmed96Mah/Image-Processing-API#readme"
+}
