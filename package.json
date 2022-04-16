@@ -4,7 +4,9 @@
   "description": "An Image Processing API using Sharp package",
   "main": "index.js",
   "scripts": {
-    "prettier": "prettier --config .prettierrc.json --ignore-path .prettierignore --write ."
+    "prettier": "prettier --config .prettierrc.json --ignore-path .prettierignore --write .",
+    "lintJs": "npx eslint --config .eslintrcJs.json ./dist/**/*.js",
+    "lintTs": "npx eslint --config .eslintrcTs.json ./src/**/*.ts"
   },
   "repository": {
     "type": "git",
@@ -18,6 +20,11 @@
   },
   "homepage": "https://github.com/Ahmed96Mah/Image-Processing-API#readme",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.19.0",
+    "@typescript-eslint/parser": "^5.19.0",
+    "eslint": "^8.13.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "prettier": "^2.6.2"
   }
 }
