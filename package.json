@@ -4,7 +4,7 @@
   "description": "An Image Processing API using Sharp package",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prettier": "prettier --config .prettierrc.json --ignore-path .prettierignore --write ."
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Ahmed96Mah/Image-Processing-API/issues"
   },
-  "homepage": "https://github.com/Ahmed96Mah/Image-Processing-API#readme"
+  "homepage": "https://github.com/Ahmed96Mah/Image-Processing-API#readme",
+  "devDependencies": {
+    "prettier": "^2.6.2"
+  }
 }
