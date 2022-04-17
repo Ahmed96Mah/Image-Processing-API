@@ -7,7 +7,10 @@
     "prettier": "prettier --config .prettierrc.json --ignore-path .prettierignore --write .",
     "lintJs": "npx eslint --config .eslintrcJs.json ./dist/**/*.js",
     "lintTs": "npx eslint --config .eslintrcTs.json ./src/**/*.ts",
-    "build": "npx tsc"
+    "lint": "npm run lintJs && npm run lintTs",
+    "build": "npx tsc",
+    "jasmine": "npx jasmine",
+    "test": "npm run build && npm run jasmine"
   },
   "repository": {
     "type": "git",
@@ -29,6 +32,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "jasmine": "^4.1.0",
+    "jasmine-spec-reporter": "^7.0.0",
     "prettier": "^2.6.2",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.3"
