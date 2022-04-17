@@ -10,7 +10,8 @@
     "lint": "npm run lintJs && npm run lintTs",
     "build": "npx tsc",
     "jasmine": "npx jasmine",
-    "test": "npm run build && npm run jasmine"
+    "test": "npm run build && npm run jasmine",
+    "start": "nodemon src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -34,6 +35,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "jasmine": "^4.1.0",
     "jasmine-spec-reporter": "^7.0.0",
+    "nodemon": "^2.0.15",
     "prettier": "^2.6.2",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.3"
