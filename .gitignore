@@ -3,4 +3,3 @@ node_modules
 
 # Ignore .json files
 package-lock.json
-.prettierrc.json
