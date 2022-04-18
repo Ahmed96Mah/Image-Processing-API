@@ -11,7 +11,7 @@
     "build": "npx tsc",
     "jasmine": "npx jasmine",
     "test": "npm run build && npm run jasmine",
-    "start": "nodemon src/index.ts"
+    "start": "nodemon --exec npx ts-node src/index.ts"
   },
   "repository": {
     "type": "git",
