@@ -3,10 +3,10 @@ import app from '../../index';
 
 const request = supertest(app);
 
-describe('Test sharp middleware response', () => {
-  it('Expects an OK response with a status 200, indicating the creation of a new file', async () => {
+describe('Test resize middleware response', () => {
+  it('Expects an OK response with a status 200, indicating the creation of a resized image', async () => {
     const response = await request.get(
-      '/api/images?filename=fjord&width=500&height=500&ext=jpeg'
+      '/api/images?filename=fjord&width=500&height=500&rotate=30&process=resize&ext=jpeg'
     );
     expect(response.status).toBe(200);
   });
