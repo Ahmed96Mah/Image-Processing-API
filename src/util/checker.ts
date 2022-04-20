@@ -7,12 +7,12 @@ const checker = (
   req: express.Request,
   res: express.Response,
   next: Function
-) => {
+): void => {
   // First, record the query parameters.
   const fileName = req.query.filename;
-  let width = req.query.width;
-  let height = req.query.height;
-  let angle = req.query.rotate;
+  let width = req.query.width as string;
+  let height = req.query.height as string;
+  let angle = req.query.rotate as string;
   const process = req.query.process as string;
   const extension = req.query.ext;
   const dimensions = sizeOf(`assets/full/${fileName}.jpg`);
@@ -43,7 +43,6 @@ const checker = (
     console.log(
       `File: thumb_${fileName}_${width}_${height}_${angle}_${process}.${extension} already exists!`
     );
-    console.log('Sending the existing thumb...');
     // Go back to the root directory (current directory src-> util).
     const dirName = path.join(__dirname, '../../');
     res
