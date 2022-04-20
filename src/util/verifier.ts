@@ -10,27 +10,41 @@ const verifier = (
   const fileName = req.query.filename;
   const width = req.query.width;
   const height = req.query.height;
+  const angle = req.query.rotate;
+  const process = req.query.process as string;
   const extension = req.query.ext as string;
   // Define the available extensions for the API.
   const availableExts = ['JPG', 'JPEG', 'PNG', 'WEBP', 'GIF', 'AVIF', 'TIFF'];
+  const availableProcess = ['RESIZE', 'ROTATE', 'FLIP', 'FLOP'];
   // Set the initial verification status.
   let verifiyName = false;
   let verifiyW = false;
   let verifiyH = false;
   let verifiyExt = false;
+  let verifiyA = false;
+  let verifiyP = false;
 
   // (File Name Verification) check if the filename exists along with its query parameter.
   if (fileName !== '' && fileName !== undefined) {
     verifiyName = true;
   }
-  // (Width Verification) check if the user has provided a non-zero width.
-  if (width !== '' && width !== '0' && width !== undefined) {
+
+  // (Width Verification) check if the user has provided a non-zero width (Mainly required for resizing process).
+  if (
+    (width !== '' && width !== '0' && width !== undefined) ||
+    process.toUpperCase() !== 'RESIZE'
+  ) {
     verifiyW = true;
   }
-  // (Height Verification) check if the user has provided a non-zero height.
-  if (height !== '' && height !== '0' && height !== undefined) {
+
+  // (Height Verification) check if the user has provided a non-zero height (Mainly required for resizing process).
+  if (
+    (height !== '' && height !== '0' && height !== undefined) ||
+    process.toUpperCase() !== 'RESIZE'
+  ) {
     verifiyH = true;
   }
+
   // (Extension Verification) check if the user has provided an acceptable extension.
   if (
     extension !== '' &&
@@ -39,12 +53,32 @@ const verifier = (
   ) {
     verifiyExt = true;
   }
+
+  // (Rotation Angle Verification) only require the rotation angle for rotation process.
+  if (
+    (angle !== '' && angle !== undefined) ||
+    process.toUpperCase() !== 'ROTATE'
+  ) {
+    verifiyA = true;
+  }
+
+  // (Process Verification) check if the entered process is avaiable.
+  if (
+    process !== '' &&
+    process !== undefined &&
+    availableProcess.includes(process.toUpperCase())
+  ) {
+    verifiyP = true;
+  }
+
   // (Main Verification) check if the source image exists (in assets -> full) & verification tests passed.
   if (
     fs.existsSync(`./assets/full/${fileName}.jpg`) &&
     verifiyW === true &&
     verifiyH === true &&
-    verifiyExt === true
+    verifiyExt === true &&
+    verifiyA === true &&
+    verifiyP === true
   ) {
     console.log(`Verified file: ${fileName}.jpg & request's info...`);
     // If the source image exists, move to the next middleware (checker).
@@ -72,6 +106,7 @@ const verifier = (
           .send(`Error, ./assets/full/${fileName}.jpg doesn't exists!!`);
       }
     }
+
     // If the error relates to the requested file width.....
     if (verifiyW === false) {
       if (width === undefined) {
@@ -86,6 +121,7 @@ const verifier = (
           );
       }
     }
+
     // If the error relates to the requested file height.....
     if (verifiyH === false) {
       if (height === undefined) {
@@ -100,6 +136,7 @@ const verifier = (
           );
       }
     }
+
     // If the error relates to the requested file extension.....
     if (verifiyExt === false) {
       if (extension === undefined) {
@@ -111,6 +148,36 @@ const verifier = (
           .status(400)
           .send(
             `Error, The available image extensions: JPG, JPEG, PNG, WEBP, GIF, AVIF, TIFF`
+          );
+      }
+    }
+
+    // If the error relates to the requested file rotation angle.....
+    if (verifiyA === false) {
+      if (angle === undefined) {
+        res
+          .status(400)
+          .send(`Error, The URL has to contain a query parameter: rotate`);
+      } else {
+        res
+          .status(400)
+          .send(
+            `Error, The image's rotation angle must hold a value. Received: ${angle}`
+          );
+      }
+    }
+
+    // If the error relates to the requested process.....
+    if (verifiyP === false) {
+      if (process === undefined) {
+        res
+          .status(400)
+          .send(`Error, The URL has to contain a query parameter: process`);
+      } else {
+        res
+          .status(400)
+          .send(
+            `Error, The available image processes: RESIZE, ROTATE, FLIP, FLOP`
           );
       }
     }
