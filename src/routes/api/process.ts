@@ -16,7 +16,7 @@ routes.get(
   rotate,
   flip,
   flop,
-  (req, res) => {}
+  (req: express.Request, res: express.Response): void => {}
 );
 
 export default routes;
