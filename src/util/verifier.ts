@@ -5,24 +5,24 @@ const verifier = (
   req: express.Request,
   res: express.Response,
   next: Function
-) => {
+): void => {
   // First, record the query parameter.
   const fileName = req.query.filename;
-  const width = req.query.width;
-  const height = req.query.height;
-  const angle = req.query.rotate;
+  const width = req.query.width as string;
+  const height = req.query.height as string;
+  const angle = req.query.rotate as string;
   const process = req.query.process as string;
   const extension = req.query.ext as string;
   // Define the available extensions for the API.
   const availableExts = ['JPG', 'JPEG', 'PNG', 'WEBP', 'GIF', 'AVIF', 'TIFF'];
   const availableProcess = ['RESIZE', 'ROTATE', 'FLIP', 'FLOP'];
   // Set the initial verification status.
-  let verifiyName = false;
-  let verifiyW = false;
-  let verifiyH = false;
-  let verifiyExt = false;
-  let verifiyA = false;
-  let verifiyP = false;
+  let verifiyName: boolean = false;
+  let verifiyW: boolean = false;
+  let verifiyH: boolean = false;
+  let verifiyExt: boolean = false;
+  let verifiyA: boolean = false;
+  let verifiyP: boolean = false;
 
   // (File Name Verification) check if the filename exists along with its query parameter.
   if (fileName !== '' && fileName !== undefined) {
@@ -31,16 +31,30 @@ const verifier = (
 
   // (Width Verification) check if the user has provided a non-zero width (Mainly required for resizing process).
   if (
-    (width !== '' && width !== '0' && width !== undefined) ||
-    process.toUpperCase() !== 'RESIZE'
+    (width !== '' &&
+      width !== '0' &&
+      width !== undefined &&
+      !/[a-zA-Z]/.test(width) &&
+      parseInt(width) > 0) ||
+    (process !== undefined &&
+      process.toUpperCase() !== 'RESIZE' &&
+      (!/[a-zA-Z]/.test(width) || width === undefined) &&
+      (parseInt(width) > 0 || width === undefined))
   ) {
     verifiyW = true;
   }
 
   // (Height Verification) check if the user has provided a non-zero height (Mainly required for resizing process).
   if (
-    (height !== '' && height !== '0' && height !== undefined) ||
-    process.toUpperCase() !== 'RESIZE'
+    (height !== '' &&
+      height !== '0' &&
+      height !== undefined &&
+      !/[a-zA-Z]/.test(height) &&
+      parseInt(height) > 0) ||
+    (process !== undefined &&
+      process.toUpperCase() !== 'RESIZE' &&
+      (!/[a-zA-Z]/.test(width) || width === undefined) &&
+      (parseInt(height) > 0 || width === undefined))
   ) {
     verifiyH = true;
   }
@@ -56,8 +70,8 @@ const verifier = (
 
   // (Rotation Angle Verification) only require the rotation angle for rotation process.
   if (
-    (angle !== '' && angle !== undefined) ||
-    process.toUpperCase() !== 'ROTATE'
+    (angle !== '' && angle !== undefined && !/[a-zA-Z]/.test(angle)) ||
+    (process !== undefined && process.toUpperCase() !== 'ROTATE')
   ) {
     verifiyA = true;
   }
