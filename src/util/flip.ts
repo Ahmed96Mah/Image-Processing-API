@@ -1,15 +1,19 @@
 import express from 'express';
-import sharp from 'sharp';
 import path from 'path';
 import sizeOf from 'image-size';
+import sharpFlip from '../sharp/sharpFlip';
 
-const flip = (req: express.Request, res: express.Response, next: Function) => {
+const flip = (
+  req: express.Request,
+  res: express.Response,
+  next: Function
+): void => {
   // First, record the query parameters.
-  const fileName = req.query.filename;
+  const fileName = req.query.filename as string;
   let width = req.query.width as string;
   let height = req.query.height as string;
   const process = req.query.process as string;
-  const extension = req.query.ext;
+  const extension = req.query.ext as string;
   const dimensions = sizeOf(`assets/full/${fileName}.jpg`);
 
   // Check the values of width, height params.
@@ -24,32 +28,21 @@ const flip = (req: express.Request, res: express.Response, next: Function) => {
 
   if (process.toLowerCase() === 'flip') {
     // Call the sharp API & provide it with path to the selected image.
-    sharp(`assets/full/${fileName}.jpg`)
-      .flip()
-      .resize(parseInt(width), parseInt(height))
-      .toFile(
-        `assets/thumb/thumb_${fileName}_${width}_${height}_0_${process}.${extension}`,
-        (err) => {
-          // This function always runs after the image is created.
-          // If there is an error (send it to the user & log it to the server).
-          if (err !== null) {
-            console.log(`error, ${err}`);
-            res.status(500).send(`error, ${err}`);
-          } else {
-            // After processing.
-            console.log(
-              `Created File: thumb_${fileName}_${width}_${height}_0_${process}.${extension}`
-            );
-            console.log(`Sending the processed thumb...`);
-            const dirName = path.join(__dirname, '../../');
-            res
-              .status(200)
-              .sendFile(
-                `${dirName}/assets/thumb/thumb_${fileName}_${width}_${height}_0_${process}.${extension}`
-              );
-          }
-        }
-      );
+    sharpFlip(
+      fileName,
+      parseInt(width),
+      parseInt(height),
+      process,
+      extension
+    ).then(() => {
+      // After the image is flipped, send the image for the user.
+      const dirName = path.join(__dirname, '../../');
+      res
+        .status(200)
+        .sendFile(
+          `${dirName}/assets/thumb/thumb_${fileName}_${width}_${height}_0_${process}.${extension}`
+        );
+    });
   } else {
     next();
   }
