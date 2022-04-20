@@ -37,9 +37,9 @@ These are some **Important notes for the reviewer** about the project: <br>
 - Capable of creating multiple resized images from the same sources image by modifiying the thumbnail name. <br>
 - Added extra processing capabilities by utilizing more aviable methods of the sharp package. <br>
 
-**The following updates are made for the project based on the review**
-1- The package.json dependencies now only includes: sharp, images-size, express.
-2- Taken into consideraton the errors that may occur in the case of (width, height, angle) being an alphabet character. Also taken into consideration that the width & height should be always a positive integer.
-3- included tests for the new image processing functions (sharp*.ts) after it has been seperated (resize.ts -> resize.ts & sharpResize.ts).
-4- included missing type parameters and return types.
+**The following updates are made for the project based on the review** <br>
+1- The package.json dependencies now only includes: sharp, images-size, express.<br>
+2- Taken into consideraton the errors that may occur in the case of (width, height, angle) being an alphabet character. Also taken into consideration that the width & height should be always a positive integer. <br>
+3- included tests for the new image processing functions (sharp*.ts) after it has been seperated (resize.ts -> resize.ts & sharpResize.ts). <br>
+4- included missing type parameters and return types. <br>
 5- prettier & lint only work on the ts files now.
