@@ -5,9 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prettier": "prettier --config .prettierrc.json --ignore-path .prettierignore --write .",
-    "lintJs": "npx eslint --config .eslintrcJs.json ./dist/**/*.js",
-    "lintTs": "npx eslint --config .eslintrcTs.json ./src/**/*.ts",
-    "lint": "npm run lintJs && npm run lintTs",
+    "lint": "npx eslint --config .eslintrcTs.json ./src/**/*.ts",
     "build": "npx tsc",
     "jasmine": "npx jasmine",
     "test": "npm run build && npm run jasmine",
@@ -39,13 +37,13 @@
     "jasmine-spec-reporter": "^7.0.0",
     "nodemon": "^2.0.15",
     "prettier": "^2.6.2",
+    "supertest": "^6.2.2",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.3"
   },
   "dependencies": {
     "express": "^4.17.3",
     "image-size": "^1.0.1",
-    "sharp": "^0.30.3",
-    "supertest": "^6.2.2"
+    "sharp": "^0.30.3"
   }
 }
