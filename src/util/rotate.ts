@@ -1,20 +1,20 @@
 import express from 'express';
-import sharp from 'sharp';
 import path from 'path';
 import sizeOf from 'image-size';
+import sharpRotate from '../sharp/sharpRotate';
 
 const rotate = (
   req: express.Request,
   res: express.Response,
   next: Function
-) => {
+): void => {
   // First, record the query parameters.
-  const fileName = req.query.filename;
+  const fileName = req.query.filename as string;
   let width = req.query.width as string;
   let height = req.query.height as string;
-  const angle = req.query.rotate as string;
+  const angle = parseInt(req.query.rotate as string);
   const process = req.query.process as string;
-  const extension = req.query.ext;
+  const extension = req.query.ext as string;
   const dimensions = sizeOf(`assets/full/${fileName}.jpg`);
 
   // Check the values of width, height params.
@@ -29,34 +29,22 @@ const rotate = (
 
   if (process.toLowerCase() === 'rotate') {
     // Call the sharp API & provide it with path to the selected image.
-    sharp(`assets/full/${fileName}.jpg`)
-      .rotate(parseInt(angle), { background: '#0e0e0e' })
-      .sharpen()
-      .median(1)
-      .resize(parseInt(width), parseInt(height))
-      .toFile(
-        `assets/thumb/thumb_${fileName}_${width}_${height}_${angle}_${process}.${extension}`,
-        (err) => {
-          // This function always runs after the image is created.
-          // If there is an error (send it to the user & log it to the server).
-          if (err !== null) {
-            console.log(`error, ${err}`);
-            res.status(500).send(`error, ${err}`);
-          } else {
-            // After processing.
-            console.log(
-              `Created File: thumb_${fileName}_${width}_${height}_${angle}_${process}.${extension}`
-            );
-            console.log(`Sending the processed thumb...`);
-            const dirName = path.join(__dirname, '../../');
-            res
-              .status(200)
-              .sendFile(
-                `${dirName}/assets/thumb/thumb_${fileName}_${width}_${height}_${angle}_${process}.${extension}`
-              );
-          }
-        }
-      );
+    sharpRotate(
+      fileName,
+      parseInt(width),
+      parseInt(height),
+      angle,
+      process,
+      extension
+    ).then(() => {
+      // After the image rotation, send the image for the user.
+      const dirName = path.join(__dirname, '../../');
+      res
+        .status(200)
+        .sendFile(
+          `${dirName}/assets/thumb/thumb_${fileName}_${width}_${height}_${angle}_${process}.${extension}`
+        );
+    });
   } else {
     next();
   }
