@@ -151,7 +151,9 @@ describe('Test verifier middleware responses', function () {
             case 0:
               return [
                 4 /*yield*/,
-                request.get('/api/images?width=500&height=500&ext=jpg'),
+                request.get(
+                  '/api/images?width=500&height=500&rotate=30&process=resize&ext=jpeg'
+                ),
               ];
             case 1:
               response = _a.sent();
@@ -173,7 +175,7 @@ describe('Test verifier middleware responses', function () {
               return [
                 4 /*yield*/,
                 request.get(
-                  '/api/images?filename=&width=500&height=500&ext=jpg'
+                  '/api/images?filename=&width=500&height=500&rotate=30&process=resize&ext=jpeg'
                 ),
               ];
             case 1:
@@ -197,7 +199,9 @@ describe('Test verifier middleware responses', function () {
             case 0:
               return [
                 4 /*yield*/,
-                request.get('/api/images?filename=fjord&height=500&ext=jpg'),
+                request.get(
+                  '/api/images?filename=fjord&height=500&rotate=30&process=resize&ext=jpeg'
+                ),
               ];
             case 1:
               response = _a.sent();
@@ -219,7 +223,7 @@ describe('Test verifier middleware responses', function () {
               return [
                 4 /*yield*/,
                 request.get(
-                  '/api/images?filename=fjord&width=&height=500&ext=jpg'
+                  '/api/images?filename=fjord&width=&height=500&rotate=30&process=resize&ext=jpeg'
                 ),
               ];
             case 1:
@@ -242,7 +246,7 @@ describe('Test verifier middleware responses', function () {
               return [
                 4 /*yield*/,
                 request.get(
-                  '/api/images?filename=fjord&width=0&height=500&ext=jpg'
+                  '/api/images?filename=fjord&width=0&height=500&rotate=30&process=resize&ext=jpeg'
                 ),
               ];
             case 1:
@@ -266,7 +270,9 @@ describe('Test verifier middleware responses', function () {
             case 0:
               return [
                 4 /*yield*/,
-                request.get('/api/images?filename=fjord&width=500&ext=jpg'),
+                request.get(
+                  '/api/images?filename=fjord&width=500&rotate=30&process=resize&ext=jpeg'
+                ),
               ];
             case 1:
               response = _a.sent();
@@ -288,7 +294,7 @@ describe('Test verifier middleware responses', function () {
               return [
                 4 /*yield*/,
                 request.get(
-                  '/api/images?filename=fjord&width=500&height=&ext=jpg'
+                  '/api/images?filename=fjord&width=500&height=&rotate=30&process=resize&ext=jpeg'
                 ),
               ];
             case 1:
@@ -311,7 +317,7 @@ describe('Test verifier middleware responses', function () {
               return [
                 4 /*yield*/,
                 request.get(
-                  '/api/images?filename=fjord&width=500&height=0&ext=jpg'
+                  '/api/images?filename=fjord&width=500&height=0&rotate=30&process=resize&ext=jpeg'
                 ),
               ];
             case 1:
@@ -335,7 +341,9 @@ describe('Test verifier middleware responses', function () {
             case 0:
               return [
                 4 /*yield*/,
-                request.get('/api/images?filename=fjord&width=500&height=500'),
+                request.get(
+                  '/api/images?filename=fjord&width=500&height=500&rotate=30&process=resize'
+                ),
               ];
             case 1:
               response = _a.sent();
@@ -357,7 +365,7 @@ describe('Test verifier middleware responses', function () {
               return [
                 4 /*yield*/,
                 request.get(
-                  '/api/images?filename=fjord&width=500&height=500&ext=no'
+                  '/api/images?filename=fjord&width=500&height=500&rotate=30&process=resize&ext=no'
                 ),
               ];
             case 1:
@@ -365,6 +373,102 @@ describe('Test verifier middleware responses', function () {
               expect(response.status).toBe(400);
               expect(response.text).toEqual(
                 'Error, The available image extensions: JPG, JPEG, PNG, WEBP, GIF, AVIF, TIFF'
+              );
+              return [2 /*return*/];
+          }
+        });
+      });
+    });
+  });
+  describe("File's rotation angle Verifications", function () {
+    it('Expects an error message with status 400, indicating a missing "rotate" query parameter', function () {
+      return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+          switch (_a.label) {
+            case 0:
+              return [
+                4 /*yield*/,
+                request.get(
+                  '/api/images?filename=fjord&width=500&height=500&process=rotate&ext=jpeg'
+                ),
+              ];
+            case 1:
+              response = _a.sent();
+              expect(response.status).toBe(400);
+              expect(response.text).toEqual(
+                'Error, The URL has to contain a query parameter: rotate'
+              );
+              return [2 /*return*/];
+          }
+        });
+      });
+    });
+    it('Expects an error message with status 400, indicating a missing "rotate" query value', function () {
+      return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+          switch (_a.label) {
+            case 0:
+              return [
+                4 /*yield*/,
+                request.get(
+                  '/api/images?filename=fjord&width=500&height=500&rotate=&process=rotate&ext=jpeg'
+                ),
+              ];
+            case 1:
+              response = _a.sent();
+              expect(response.status).toBe(400);
+              expect(response.text).toEqual(
+                "Error, The image's rotation angle must hold a value. Received: "
+              );
+              return [2 /*return*/];
+          }
+        });
+      });
+    });
+  });
+  describe("File's process Verifications", function () {
+    it('Expects an error message with status 400, indicating a missing "process" query parameter', function () {
+      return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+          switch (_a.label) {
+            case 0:
+              return [
+                4 /*yield*/,
+                request.get(
+                  '/api/images?filename=fjord&width=500&height=500&rotate=30&ext=jpeg'
+                ),
+              ];
+            case 1:
+              response = _a.sent();
+              expect(response.status).toBe(400);
+              expect(response.text).toEqual(
+                'Error, The URL has to contain a query parameter: process'
+              );
+              return [2 /*return*/];
+          }
+        });
+      });
+    });
+    it('Expects an error message with status 400, indicating a missing "process" query value', function () {
+      return __awaiter(void 0, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+          switch (_a.label) {
+            case 0:
+              return [
+                4 /*yield*/,
+                request.get(
+                  '/api/images?filename=fjord&width=500&height=500&rotate=30&process=&ext=jpeg'
+                ),
+              ];
+            case 1:
+              response = _a.sent();
+              expect(response.status).toBe(400);
+              expect(response.text).toEqual(
+                'Error, The available image processes: RESIZE, ROTATE, FLIP, FLOP'
               );
               return [2 /*return*/];
           }

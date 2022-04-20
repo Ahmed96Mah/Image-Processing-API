@@ -151,8 +151,26 @@ describe('Test checker middleware response', function () {
             return [
               4 /*yield*/,
               request.get(
-                '/api/images?filename=fjord&width=500&height=500&ext=jpg'
+                '/api/images?filename=fjord&width=500&height=500&rotate=30&process=resize&ext=jpeg'
               ),
+            ];
+          case 1:
+            response = _a.sent();
+            expect(response.status).toBe(200);
+            return [2 /*return*/];
+        }
+      });
+    });
+  });
+  it('Expects an OK response with a status 200, indicating the recognition without width, height, rotate', function () {
+    return __awaiter(void 0, void 0, void 0, function () {
+      var response;
+      return __generator(this, function (_a) {
+        switch (_a.label) {
+          case 0:
+            return [
+              4 /*yield*/,
+              request.get('/api/images?filename=fjord&process=flip&ext=jpeg'),
             ];
           case 1:
             response = _a.sent();
