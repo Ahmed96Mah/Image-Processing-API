@@ -1,4 +1,4 @@
-# Image Processing API using sharp
+# Image Processing API using sharp (Fullfillment of Udacity's Full-Stack Nanodegree (1st project))
 
 ## Project Description
 
